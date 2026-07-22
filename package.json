@@ -1,0 +1,32 @@
+{
+  "name": "sudoku-teach",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "node server/index.js",
+    "dev:all": "node -e \"const{spawn}=require('child_process');spawn('node',['server/index.js'],{stdio:'inherit',shell:true});spawn('npx',['vite','--host','0.0.0.0','--port','5173'],{stdio:'inherit',shell:true})\"",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "i18next": "^26.3.6",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-i18next": "^17.0.10",
+    "react-router-dom": "^7.18.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "gh-release": "^8.1.0",
+    "oxlint": "^1.71.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.1.1"
+  }
+}

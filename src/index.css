@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #6c5ce7;
+  --color-primary-light: #a29bfe;
+  --color-secondary: #fd79a8;
+  --color-accent: #00cec9;
+  --color-warm: #fdcb6e;
+  --color-bg: #f8f9ff;
+  --color-card: #ffffff;
+  --color-text: #2d3436;
+  --color-text-light: #636e72;
+  --color-success: #00b894;
+  --color-error: #e17055;
+  --color-cell-given: #2d3436;
+  --color-cell-input: #6c5ce7;
+  --color-cell-selected: #dfe6e9;
+  --color-cell-highlight: #ffeaa7;
+  --color-cell-note: #74b9ff;
+  --color-border: #b2bec3;
+  --color-board-border: #2d3436;
+  --color-lock: #dfe6e9;
+}
+
+body {
+  margin: 0;
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.sudoku-cell {
+  @apply flex items-center justify-center cursor-pointer select-none;
+  transition: background-color 0.15s ease;
+}
+
+.sudoku-cell:hover {
+  background-color: #f0f0f0;
+}
