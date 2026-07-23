@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '../context/AppContext.jsx';
@@ -6,6 +7,7 @@ export default function Header() {
   const { t } = useTranslation();
   const { state, dispatch, logout } = useApp();
   const location = useLocation();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleLang = () => {
     const newLang = state.language === 'zh' ? 'en' : 'zh';
@@ -14,28 +16,28 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    setDrawerOpen(false);
   };
 
   const isActive = (path) => location.pathname === path;
 
-  // 登录页不显示导航
   if (location.pathname === '/login') return null;
 
   const navItems = [
-    { path: '/learn', label: t('common.startLearning'), icon: '📚', short: t('common.startLearning')?.slice(0, 2) || '学习' },
-    { path: '/free-practice', label: t('common.freePractice'), icon: '🎯', short: t('common.freePractice')?.slice(0, 2) || '练习' },
-    { path: '/progress', label: t('common.progress'), icon: '📈', short: t('common.progress')?.slice(0, 2) || '进度' },
-    { path: '/ranking', label: t('common.ranking'), icon: '🏆', short: t('common.ranking')?.slice(0, 2) || '排名' },
+    { path: '/learn', label: t('common.startLearning'), icon: '📚' },
+    { path: '/free-practice', label: t('common.freePractice'), icon: '🎯' },
+    { path: '/progress', label: t('common.progress'), icon: '📈' },
+    { path: '/ranking', label: t('common.ranking'), icon: '🏆' },
   ];
 
   if (state.isAdmin) {
-    navItems.push({ path: '/admin', label: '管理', icon: '🔐', short: '管理' });
+    navItems.push({ path: '/admin', label: '管理', icon: '🔐' });
   }
 
   return (
     <>
       {/* 桌面端顶部导航 */}
-      <header className="bg-white shadow-sm sticky top-0 z-50 hidden md:block">
+      <header className="bg-white shadow-sm sticky top-0 z-40 hidden md:block">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">9</div>
@@ -57,7 +59,6 @@ export default function Header() {
               </Link>
             ))}
 
-            {/* 用户信息 */}
             {state.user && (
               <span className="text-xs text-text-light border-l border-gray-200 pl-4">
                 👤 {state.user.username}
@@ -86,58 +87,91 @@ export default function Header() {
       </header>
 
       {/* 移动端顶部标题栏 */}
-      <header className="bg-white shadow-sm sticky top-0 z-50 md:hidden">
-        <div className="max-w-6xl mx-auto px-3 h-12 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-base">9</div>
-            <span className="text-base font-bold text-text">{t('common.siteName')}</span>
+      <header className="md:hidden bg-white shadow-sm sticky top-0 z-40">
+        <div className="h-12 flex items-center justify-between px-3">
+          <Link to="/" className="flex items-center gap-2 min-w-0">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-base shrink-0">9</div>
+            <span className="text-base font-bold text-text truncate">{t('common.siteName')}</span>
           </Link>
 
-          <div className="flex items-center gap-2">
-            {state.user && (
-              <span className="text-xs text-text-light hidden xs:block">
-                👤 {state.user.username}
-              </span>
-            )}
+          <div className="flex items-center gap-1.5 shrink-0">
             <button
               onClick={toggleLang}
-              className="px-2.5 py-1 rounded-full border-2 border-primary text-primary text-[10px] font-bold hover:bg-primary hover:text-white transition-colors"
+              className="px-2 py-1 rounded-full border border-primary text-primary text-[10px] font-bold hover:bg-primary hover:text-white transition-colors"
             >
               {state.language === 'zh' ? 'EN' : '中文'}
             </button>
             <button
-              onClick={handleLogout}
-              className="text-xs text-text-light hover:text-error transition-colors px-1"
-              title={t('auth.logout')}
+              onClick={() => setDrawerOpen(true)}
+              className="w-8 h-8 flex items-center justify-center text-text hover:text-primary"
+              aria-label="menu"
             >
-              🚪
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
             </button>
           </div>
         </div>
       </header>
 
-      {/* 移动端底部图标导航 */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-safe">
-        <div className="flex items-center justify-around h-14">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 ${
-                isActive(item.path)
-                  ? 'text-primary'
-                  : 'text-text-light'
-              }`}
-            >
-              <span className="text-lg leading-none">{item.icon}</span>
-              <span className="text-[10px] leading-none">{item.short}</span>
-            </Link>
-          ))}
-        </div>
-      </nav>
+      {/* 移动端抽屉导航 */}
+      {drawerOpen && (
+        <>
+          <div
+            className="md:hidden fixed inset-0 bg-black/40 z-50"
+            onClick={() => setDrawerOpen(false)}
+          />
+          <div className="md:hidden fixed top-0 right-0 bottom-0 w-56 bg-white shadow-2xl z-50 flex flex-col">
+            <div className="h-12 flex items-center justify-between px-4 border-b border-gray-100">
+              <span className="font-bold text-text">{t('common.menu') || '菜单'}</span>
+              <button
+                onClick={() => setDrawerOpen(false)}
+                className="w-8 h-8 flex items-center justify-center text-text-light hover:text-error"
+                aria-label="close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
 
-      {/* 为底部导航留出空间 */}
-      <div className="md:hidden h-14" />
+            <nav className="flex-1 py-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setDrawerOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 text-sm ${
+                    isActive(item.path)
+                      ? 'text-primary font-bold bg-primary/5'
+                      : 'text-text hover:bg-gray-50'
+                  }`}
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+
+            <div className="border-t border-gray-100 p-4">
+              {state.user && (
+                <div className="text-sm text-text mb-3">
+                  👤 {state.user.username}
+                  {state.isAdmin && (
+                    <span className="ml-2 text-[10px] bg-red-100 text-red-500 px-1.5 py-0.5 rounded-full">admin</span>
+                  )}
+                </div>
+              )}
+              <button
+                onClick={handleLogout}
+                className="w-full px-4 py-2 rounded-xl border border-error text-error text-sm font-semibold hover:bg-error hover:text-white transition-colors"
+              >
+                {t('auth.logout') || '退出登录'}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -101,21 +101,23 @@ export default function FreePractice() {
       <h1 className="text-2xl font-bold text-text text-center mb-2">{t('practice.freeTitle')}</h1>
       
       {/* 难度选择 */}
-      <div className="flex flex-wrap justify-center gap-2 mb-6">
-        {difficulties.map(d => (
-          <button
-            key={d.id}
-            onClick={() => startGame(d.id)}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200
-              ${difficulty === d.id
-                ? 'text-white shadow-md'
-                : 'bg-white text-text border-2 border-gray-200 hover:border-gray-400'
-              }`}
-            style={difficulty === d.id ? { backgroundColor: d.color } : {}}
-          >
-            {d.label}
-          </button>
-        ))}
+      <div className="overflow-x-auto -mx-4 px-4 mb-4 scrollbar-hide">
+        <div className="flex justify-start sm:justify-center gap-2 min-w-max">
+          {difficulties.map(d => (
+            <button
+              key={d.id}
+              onClick={() => startGame(d.id)}
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap
+                ${difficulty === d.id
+                  ? 'text-white shadow-md'
+                  : 'bg-white text-text border-2 border-gray-200 hover:border-gray-400'
+                }`}
+              style={difficulty === d.id ? { backgroundColor: d.color } : {}}
+            >
+              {d.label}
+            </button>
+          ))}
+        </div>
       </div>
       
       {/* 计时和统计 */}

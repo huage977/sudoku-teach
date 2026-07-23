@@ -29,6 +29,15 @@ body {
   color: var(--color-text);
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .sudoku-cell {
   @apply flex items-center justify-center cursor-pointer select-none;
   transition: background-color 0.15s ease;
