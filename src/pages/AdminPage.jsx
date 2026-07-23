@@ -82,28 +82,28 @@ export default function AdminPage() {
   }, [allUsers]);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold text-text text-center mb-8">
+    <div className="max-w-5xl mx-auto px-3 sm:px-4 py-6 sm:py-10 pb-24 sm:pb-10">
+      <h1 className="text-xl sm:text-2xl font-bold text-text text-center mb-6 sm:mb-8">
         🔐 {lang === 'en' ? 'Admin Dashboard' : '管理员控制台'}
       </h1>
 
       {/* 概览统计 */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-        <div className="bg-white rounded-2xl p-4 text-center shadow-sm">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-6 sm:mb-8">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 text-center shadow-sm">
           <div className="text-2xl font-bold text-primary">{stats.totalUsers}</div>
-          <div className="text-[10px] text-text-light mt-0.5">{lang === 'en' ? 'Total Users' : '注册用户'}</div>
+          <div className="text-[10px] sm:text-xs text-text-light mt-0.5">{lang === 'en' ? 'Total Users' : '注册用户'}</div>
         </div>
-        <div className="bg-white rounded-2xl p-4 text-center shadow-sm">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 text-center shadow-sm">
           <div className="text-2xl font-bold text-secondary">{stats.totalRecords}</div>
-          <div className="text-[10px] text-text-light mt-0.5">{lang === 'en' ? 'Total Records' : '做题记录'}</div>
+          <div className="text-[10px] sm:text-xs text-text-light mt-0.5">{lang === 'en' ? 'Total Records' : '做题记录'}</div>
         </div>
       </div>
 
       {/* 导航标签 */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-4 sm:mb-6">
         <button
           onClick={() => setActiveSection('users')}
-          className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+          className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
             activeSection === 'users'
               ? 'bg-primary text-white shadow-sm'
               : 'bg-white text-text-light border border-gray-200 hover:border-primary/40'
@@ -113,7 +113,7 @@ export default function AdminPage() {
         </button>
         <button
           onClick={() => setActiveSection('allData')}
-          className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+          className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
             activeSection === 'allData'
               ? 'bg-primary text-white shadow-sm'
               : 'bg-white text-text-light border border-gray-200 hover:border-primary/40'
@@ -146,25 +146,25 @@ export default function AdminPage() {
                     >
                       {/* 用户摘要行 */}
                       <div
-                        className="flex items-center justify-between px-4 py-3.5 cursor-pointer"
+                        className="flex items-center justify-between px-3 sm:px-4 py-3 cursor-pointer gap-2"
                         onClick={() => setExpandUser(isExpanded ? null : user.username)}
                       >
-                        <div className="flex items-center gap-3">
-                          <span className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">
+                        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                          <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">
                             {idx + 1}
                           </span>
-                          <div>
-                            <span className="font-semibold text-text">{user.username}</span>
-                            <span className="text-xs text-text-light ml-2">
+                          <div className="min-w-0">
+                            <span className="font-semibold text-text text-sm sm:text-base">{user.username}</span>
+                            <span className="text-xs text-text-light ml-1 sm:ml-2 block sm:inline">
                               {user.recordCount} {lang === 'en' ? 'records' : '条记录'}
                             </span>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] bg-red-50 text-red-500 px-2 py-0.5 rounded-full font-mono">
-                            {lang === 'en' ? 'password:' : '密码：'}{user.password}
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="text-[10px] bg-red-50 text-red-500 px-1.5 sm:px-2 py-0.5 rounded-full font-mono truncate max-w-[80px] sm:max-w-[120px]">
+                            {lang === 'en' ? 'pwd:' : '密：'}{user.password}
                           </span>
-                          <span className="text-text-light text-sm transition-transform" style={{ transform: isExpanded ? 'rotate(180deg)' : 'none' }}>
+                          <span className="text-text-light text-xs sm:text-sm transition-transform" style={{ transform: isExpanded ? 'rotate(180deg)' : 'none' }}>
                             ▼
                           </span>
                         </div>
@@ -198,7 +198,7 @@ export default function AdminPage() {
                                         }`}
                                       >
                                         {getLevelName(Number(levelId))}: {p.status === 'completed' ? '✅' : '🔓'}
-                                        ({(p.completedTechniques || []).length} {lang === 'en' ? 'techs' : '技巧'})
+                                        <span className="hidden sm:inline"> ({(p.completedTechniques || []).length} {lang === 'en' ? 'techs' : '技巧'})</span>
                                       </span>
                                     ))}
                                   </div>
@@ -217,18 +217,18 @@ export default function AdminPage() {
                                     {cached.records.map((r, i) => (
                                       <div
                                         key={i}
-                                        className="flex items-center justify-between text-xs bg-gray-50 rounded-xl px-3 py-2"
+                                        className="flex flex-col sm:flex-row sm:items-center justify-between text-xs bg-gray-50 rounded-xl px-3 py-2 gap-1 sm:gap-2"
                                       >
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2 flex-wrap">
                                           <span className="font-semibold text-text">{getLevelName(r.levelId)}</span>
                                           <span className="text-text-light">·</span>
-                                          <span>{getTechName(r.techniqueId)}</span>
+                                          <span className="text-text-light">{getTechName(r.techniqueId)}</span>
                                         </div>
-                                        <div className="flex items-center gap-2 text-text-light">
+                                        <div className="flex items-center gap-2 text-text-light text-[10px] sm:text-xs">
                                           <span>⏱ {formatTime(r.time)}</span>
                                           <span>{lang === 'en' ? '✗' : '❌'} {r.mistakes || 0}</span>
                                           <span>💡 {r.hints || 0}</span>
-                                          <span className="hidden sm:inline">{formatDate(r.completedAt)}</span>
+                                          <span>{formatDate(r.completedAt)}</span>
                                         </div>
                                       </div>
                                     ))}
@@ -249,22 +249,22 @@ export default function AdminPage() {
           {activeSection === 'allData' && (
             <div className="space-y-6">
               {/* 所有用户密码一览 */}
-              <div className="bg-white rounded-2xl shadow-sm p-4">
-                <h3 className="font-bold text-text mb-3">
+              <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4">
+                <h3 className="font-bold text-text mb-3 text-sm sm:text-base">
                   {lang === 'en' ? '🔑 All Users & Passwords' : '🔑 所有用户及密码'}
                 </h3>
                 {allUsers.length === 0 ? (
                   <p className="text-sm text-text-light">{lang === 'en' ? 'No users' : '暂无用户'}</p>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
+                  <div className="overflow-x-auto -mx-3 sm:mx-0">
+                    <table className="w-full text-xs sm:text-sm min-w-[360px]">
                       <thead>
                         <tr className="border-b border-gray-100">
-                          <th className="text-left py-2 pr-4 text-text-light font-semibold">#</th>
-                          <th className="text-left py-2 pr-4 text-text-light font-semibold">{lang === 'en' ? 'Username' : '用户名'}</th>
-                          <th className="text-left py-2 pr-4 text-text-light font-semibold">{lang === 'en' ? 'Password' : '密码'}</th>
-                          <th className="text-left py-2 pr-4 text-text-light font-semibold">{lang === 'en' ? 'Records' : '做题数'}</th>
-                          <th className="text-left py-2 text-text-light font-semibold">{lang === 'en' ? 'Levels Progress' : '关卡进度'}</th>
+                          <th className="text-left py-2 pr-2 sm:pr-4 text-text-light font-semibold">#</th>
+                          <th className="text-left py-2 pr-2 sm:pr-4 text-text-light font-semibold">{lang === 'en' ? 'Username' : '用户名'}</th>
+                          <th className="text-left py-2 pr-2 sm:pr-4 text-text-light font-semibold">{lang === 'en' ? 'Password' : '密码'}</th>
+                          <th className="text-left py-2 pr-2 sm:pr-4 text-text-light font-semibold">{lang === 'en' ? 'Records' : '做题数'}</th>
+                          <th className="text-left py-2 text-text-light font-semibold">{lang === 'en' ? 'Progress' : '进度'}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -275,15 +275,15 @@ export default function AdminPage() {
                             : 0;
                           return (
                             <tr key={user.username} className="border-b border-gray-50 hover:bg-gray-50">
-                              <td className="py-2.5 pr-4 text-text-light">{idx + 1}</td>
-                              <td className="py-2.5 pr-4 font-semibold text-text">{user.username}</td>
-                              <td className="py-2.5 pr-4">
-                                <span className="bg-red-50 text-red-500 px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold">
+                              <td className="py-2 pr-2 sm:pr-4 text-text-light">{idx + 1}</td>
+                              <td className="py-2 pr-2 sm:pr-4 font-semibold text-text">{user.username}</td>
+                              <td className="py-2 pr-2 sm:pr-4">
+                                <span className="bg-red-50 text-red-500 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold">
                                   {user.password}
                                 </span>
                               </td>
-                              <td className="py-2.5 pr-4 text-text-light">{user.recordCount}</td>
-                              <td className="py-2.5 text-text-light">
+                              <td className="py-2 pr-2 sm:pr-4 text-text-light">{user.recordCount}</td>
+                              <td className="py-2 text-text-light">
                                 {completedLevels}/{levels.length}
                               </td>
                             </tr>
