@@ -185,7 +185,7 @@ const routes = {
   'GET /api/admin/users/:username': async (req, res, data, match) => {
     const user = getAuthUser(req, data);
     if (!user || !user.isAdmin) return json(res, 403, { error: '无权限' });
-    const targetUsername = match[1];
+    const targetUsername = match[0];
     const target = data.users.find(u => u.username === targetUsername);
     if (!target) return json(res, 404, { error: '用户不存在' });
     json(res, 200, {
